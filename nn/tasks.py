@@ -6,12 +6,10 @@ import re
 import types
 from copy import deepcopy
 from pathlib import Path
-from ultralytics.nn.modules.cbam import CBAM
+
 import torch
 import torch.nn as nn
-from ultralytics.nn.modules.asff import ASFF
-from torch.nn import Upsample 
-
+from torch.nn import Upsample
 from ultralytics.nn.autobackend import check_class_names
 from ultralytics.nn.modules import (
     AIFI,
@@ -71,6 +69,8 @@ from ultralytics.nn.modules import (
     YOLOESegment,
     v10Detect,
 )
+from ultralytics.nn.modules.asff import ASFF
+from ultralytics.nn.modules.cbam import CBAM
 from ultralytics.utils import DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, YAML, colorstr, emojis
 from ultralytics.utils.checks import check_requirements, check_suffix, check_yaml
 from ultralytics.utils.loss import (
@@ -1670,15 +1670,14 @@ def parse_model(d, ch, verbose=True):
     for i, (f, n, m, args) in enumerate(d["backbone"] + d["neck"] + d["head"]):  # from, number, module, args
         globals()["CBAM"] = CBAM
         globals()["ASFF"] = ASFF
-        globals()["Upsample"]=Upsample
+        globals()["Upsample"] = Upsample
 
         m = (
             getattr(torch.nn, m[3:])
             if "nn." in m
             else getattr(__import__("torchvision").ops, m[16:])
             if "torchvision.ops." in m
-            else 
-                globals()[m]
+            else globals()[m]
         )
         if m.__name__ == "CBAM" and args and args[0] == -1:
             args[0] = ch[f]
@@ -1762,7 +1761,7 @@ def parse_model(d, ch, verbose=True):
             output_shape = m_(dummy).shape
         except Exception as e:
             print(f"[DEBUG] Error at layer {i} ({m}): {e}")
-    
+
         t = str(m)[8:-2].replace("__main__.", "")  # module type
         m_.np = sum(x.numel() for x in m_.parameters())  # number params
         m_.i, m_.f, m_.type = i, f, t  # attach index, 'from' index, type

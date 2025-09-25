@@ -1,7 +1,6 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 import requests
-
 from ultralytics.data.utils import HUBDatasetStats
 from ultralytics.hub.auth import Auth
 from ultralytics.hub.session import HUBTrainingSession

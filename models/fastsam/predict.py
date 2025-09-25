@@ -2,7 +2,6 @@
 
 import torch
 from PIL import Image
-
 from ultralytics.models.yolo.segment import SegmentationPredictor
 from ultralytics.utils import DEFAULT_CFG, checks
 from ultralytics.utils.metrics import box_iou

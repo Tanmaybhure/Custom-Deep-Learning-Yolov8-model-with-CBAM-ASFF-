@@ -18,7 +18,6 @@ from typing import Optional
 import cv2
 import numpy as np
 import torch
-
 from ultralytics.utils import (
     ARM64,
     ASSETS,
@@ -638,7 +637,6 @@ def check_yolo(verbose=True, device=""):
         device (str | torch.device): Device to use for YOLO.
     """
     import psutil
-
     from ultralytics.utils.torch_utils import select_device
 
     if IS_COLAB:
@@ -671,7 +669,6 @@ def collect_system_info():
         (dict): Dictionary containing system information.
     """
     import psutil
-
     from ultralytics.utils import ENVIRONMENT  # scope to avoid circular import
     from ultralytics.utils.torch_utils import get_cpu_info, get_gpu_info
 

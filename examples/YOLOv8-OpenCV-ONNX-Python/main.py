@@ -1,11 +1,10 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 import argparse
-from typing import Any, Dict, List
+from typing import Any
 
 import cv2.dnn
 import numpy as np
-
 from ultralytics.utils import ASSETS, YAML
 from ultralytics.utils.checks import check_yaml
 
@@ -34,7 +33,7 @@ def draw_bounding_box(
     cv2.putText(img, label, (x - 10, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
 
-def main(onnx_model: str, input_image: str) -> List[Dict[str, Any]]:
+def main(onnx_model: str, input_image: str) -> list[dict[str, Any]]:
     """
     Load ONNX model, perform inference, draw bounding boxes, and display the output image.
 

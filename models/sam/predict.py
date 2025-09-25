@@ -13,7 +13,6 @@ from collections import OrderedDict
 import numpy as np
 import torch
 import torch.nn.functional as F
-
 from ultralytics.data.augment import LetterBox
 from ultralytics.engine.predictor import BasePredictor
 from ultralytics.engine.results import Results

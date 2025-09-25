@@ -1,12 +1,11 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Optional
 
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from scipy.optimize import linear_sum_assignment
-
 from ultralytics.utils.metrics import bbox_iou
 from ultralytics.utils.ops import xywh2xyxy, xyxy2xywh
 
@@ -47,7 +46,7 @@ class HungarianMatcher(nn.Module):
 
     def __init__(
         self,
-        cost_gain: Optional[Dict[str, float]] = None,
+        cost_gain: Optional[dict[str, float]] = None,
         use_fl: bool = True,
         with_mask: bool = False,
         num_sample_points: int = 12544,
@@ -82,10 +81,10 @@ class HungarianMatcher(nn.Module):
         pred_scores: torch.Tensor,
         gt_bboxes: torch.Tensor,
         gt_cls: torch.Tensor,
-        gt_groups: List[int],
+        gt_groups: list[int],
         masks: Optional[torch.Tensor] = None,
-        gt_mask: Optional[List[torch.Tensor]] = None,
-    ) -> List[Tuple[torch.Tensor, torch.Tensor]]:
+        gt_mask: Optional[list[torch.Tensor]] = None,
+    ) -> list[tuple[torch.Tensor, torch.Tensor]]:
         """
         Compute optimal assignment between predictions and ground truth using Hungarian algorithm.
 
@@ -187,7 +186,7 @@ class HungarianMatcher(nn.Module):
 
 
 def get_cdn_group(
-    batch: Dict[str, Any],
+    batch: dict[str, Any],
     num_classes: int,
     num_queries: int,
     class_embed: torch.Tensor,
@@ -195,7 +194,7 @@ def get_cdn_group(
     cls_noise_ratio: float = 0.5,
     box_noise_scale: float = 1.0,
     training: bool = False,
-) -> Tuple[Optional[torch.Tensor], Optional[torch.Tensor], Optional[torch.Tensor], Optional[Dict[str, Any]]]:
+) -> tuple[Optional[torch.Tensor], Optional[torch.Tensor], Optional[torch.Tensor], Optional[dict[str, Any]]]:
     """
     Generate contrastive denoising training group with positive and negative samples from ground truths.
 

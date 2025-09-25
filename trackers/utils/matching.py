@@ -3,7 +3,6 @@
 import numpy as np
 import scipy
 from scipy.spatial.distance import cdist
-
 from ultralytics.utils.metrics import batch_probiou, bbox_ioa
 
 try:

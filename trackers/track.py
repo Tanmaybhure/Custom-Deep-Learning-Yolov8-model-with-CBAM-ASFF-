@@ -4,7 +4,6 @@ from functools import partial
 from pathlib import Path
 
 import torch
-
 from ultralytics.utils import YAML, IterableSimpleNamespace
 from ultralytics.utils.checks import check_yaml
 

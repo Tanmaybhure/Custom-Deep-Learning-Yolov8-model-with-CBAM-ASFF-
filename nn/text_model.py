@@ -2,12 +2,11 @@
 
 from abc import abstractmethod
 from pathlib import Path
-from typing import List, Union
+from typing import Union
 
 import torch
 import torch.nn as nn
 from PIL import Image
-
 from ultralytics.utils import checks
 from ultralytics.utils.torch_utils import smart_inference_mode
 
@@ -91,7 +90,7 @@ class CLIP(TextModel):
         self.device = device
         self.eval()
 
-    def tokenize(self, texts: Union[str, List[str]]) -> torch.Tensor:
+    def tokenize(self, texts: Union[str, list[str]]) -> torch.Tensor:
         """
         Convert input texts to CLIP tokens.
 
@@ -234,7 +233,7 @@ class MobileCLIP(TextModel):
         self.device = device
         self.eval()
 
-    def tokenize(self, texts: List[str]) -> torch.Tensor:
+    def tokenize(self, texts: list[str]) -> torch.Tensor:
         """
         Convert input texts to MobileCLIP tokens.
 
@@ -319,7 +318,7 @@ class MobileCLIPTS(TextModel):
         self.tokenizer = clip.clip.tokenize
         self.device = device
 
-    def tokenize(self, texts: List[str]) -> torch.Tensor:
+    def tokenize(self, texts: list[str]) -> torch.Tensor:
         """
         Convert input texts to MobileCLIP tokens.
 

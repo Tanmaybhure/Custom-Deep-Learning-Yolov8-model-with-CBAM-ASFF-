@@ -3,13 +3,12 @@
 import argparse
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, List
+from typing import Any
 
 import cv2
 import numpy as np
 from shapely.geometry import Polygon
 from shapely.geometry.point import Point
-
 from ultralytics import YOLO
 from ultralytics.utils.files import increment_path
 from ultralytics.utils.plotting import Annotator, colors
@@ -90,7 +89,7 @@ def run(
     view_img: bool = False,
     save_img: bool = False,
     exist_ok: bool = False,
-    classes: List[int] = None,
+    classes: list[int] = None,
     line_thickness: int = 2,
     track_thickness: int = 2,
     region_thickness: int = 2,

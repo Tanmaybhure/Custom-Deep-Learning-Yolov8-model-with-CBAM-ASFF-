@@ -1,4 +1,5 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
+from ultralytics.nn.modules.cbam import CBAM
 
 from .tasks import (
     BaseModel,
@@ -26,4 +27,5 @@ __all__ = (
     "SegmentationModel",
     "ClassificationModel",
     "BaseModel",
+    "CBAM",
 )

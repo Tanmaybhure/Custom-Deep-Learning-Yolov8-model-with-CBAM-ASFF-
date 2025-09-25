@@ -350,7 +350,8 @@ class C3(nn.Module):
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """Forward pass through the CSP bottleneck with 3 convolutions."""
-        return self.cv3(torch.cat((self.m(self.cv1(x)), self.cv2(x)), 1))
+        out=self.cv3(torch.cat((self.m(self.cv1(x)), self.cv2(x)), 1))
+        return out
 
 
 class C3x(C3):

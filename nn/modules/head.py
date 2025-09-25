@@ -20,7 +20,6 @@ from .utils import bias_init_with_prob, linear_init
 
 __all__ = "Detect", "Segment", "Pose", "Classify", "OBB", "RTDETRDecoder", "v10Detect", "YOLOEDetect", "YOLOESegment"
 
-
 class Detect(nn.Module):
     """
     YOLO Detect head for object detection models.
@@ -117,6 +116,8 @@ class Detect(nn.Module):
             return self.forward_end2end(x)
 
         for i in range(self.nl):
+            if x[i].dim() == 3:
+                x[i] = x[i].unsqueeze(0)  # Add batch dimension
             x[i] = torch.cat((self.cv2[i](x[i]), self.cv3[i](x[i])), 1)
         if self.training:  # Training path
             return x

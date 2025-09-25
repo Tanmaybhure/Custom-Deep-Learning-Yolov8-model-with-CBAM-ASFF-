@@ -6,9 +6,11 @@ import re
 import types
 from copy import deepcopy
 from pathlib import Path
-
+from ultralytics.nn.modules.cbam import CBAM
 import torch
 import torch.nn as nn
+from ultralytics.nn.modules.asff import ASFF
+from torch.nn import Upsample 
 
 from ultralytics.nn.autobackend import check_class_names
 from ultralytics.nn.modules import (
@@ -1665,14 +1667,21 @@ def parse_model(d, ch, verbose=True):
             A2C2f,
         }
     )
-    for i, (f, n, m, args) in enumerate(d["backbone"] + d["head"]):  # from, number, module, args
+    for i, (f, n, m, args) in enumerate(d["backbone"] + d["neck"] + d["head"]):  # from, number, module, args
+        globals()["CBAM"] = CBAM
+        globals()["ASFF"] = ASFF
+        globals()["Upsample"]=Upsample
+
         m = (
             getattr(torch.nn, m[3:])
             if "nn." in m
             else getattr(__import__("torchvision").ops, m[16:])
             if "torchvision.ops." in m
-            else globals()[m]
-        )  # get module
+            else 
+                globals()[m]
+        )
+        if m.__name__ == "CBAM" and args and args[0] == -1:
+            args[0] = ch[f]
         for j, a in enumerate(args):
             if isinstance(a, str):
                 with contextlib.suppress(ValueError):
@@ -1700,6 +1709,14 @@ def parse_model(d, ch, verbose=True):
                     args.extend((True, 1.2))
             if m is C2fCIB:
                 legacy = False
+
+        elif m.__name__ == "ASFF":
+            assert isinstance(f, list) and len(f) == 3, f"ASFF expects 3 inputs, got: {f}"
+            level = args[0]
+            c_in = [ch[j] for j in f]  # Get channels of inputs
+            args = [level, c_in]
+            c2 = c_in[level]  # Output channel = intermediate dim
+        # pass level and list of input channels
         elif m is AIFI:
             args = [ch[f], *args]
         elif m in frozenset({HGStem, HGBlock}):
@@ -1717,7 +1734,8 @@ def parse_model(d, ch, verbose=True):
         elif m in frozenset(
             {Detect, WorldDetect, YOLOEDetect, Segment, YOLOESegment, Pose, OBB, ImagePoolingAttn, v10Detect}
         ):
-            args.append([ch[x] for x in f])
+            f_ = f if isinstance(f, list) else [f]
+            args.append([ch[x] for x in f_])
             if m is Segment or m is YOLOESegment:
                 args[2] = make_divisible(min(args[2], max_channels) * width, 8)
             if m in {Detect, YOLOEDetect, Segment, YOLOESegment, Pose, OBB}:
@@ -1738,6 +1756,13 @@ def parse_model(d, ch, verbose=True):
             c2 = ch[f]
 
         m_ = torch.nn.Sequential(*(m(*args) for _ in range(n))) if n > 1 else m(*args)  # module
+        output_shape = None
+        try:
+            dummy = torch.zeros(1, ch[f], 64, 64)  # or s x s depending on resolution
+            output_shape = m_(dummy).shape
+        except Exception as e:
+            print(f"[DEBUG] Error at layer {i} ({m}): {e}")
+    
         t = str(m)[8:-2].replace("__main__.", "")  # module type
         m_.np = sum(x.numel() for x in m_.parameters())  # number params
         m_.i, m_.f, m_.type = i, f, t  # attach index, 'from' index, type

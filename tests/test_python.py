@@ -11,8 +11,6 @@ import numpy as np
 import pytest
 import torch
 from PIL import Image
-
-from tests import CFG, MODEL, MODELS, SOURCE, SOURCES_LIST, TASK_MODEL_DATA, TMP
 from ultralytics import RTDETR, YOLO
 from ultralytics.cfg import TASK2DATA, TASKS
 from ultralytics.data.build import load_inference_source
@@ -35,6 +33,8 @@ from ultralytics.utils import (
 )
 from ultralytics.utils.downloads import download
 from ultralytics.utils.torch_utils import TORCH_1_9
+
+from tests import CFG, MODEL, MODELS, SOURCE, SOURCES_LIST, TASK_MODEL_DATA, TMP
 
 IS_TMP_WRITEABLE = is_dir_writeable(TMP)  # WARNING: must be run once tests start as TMP does not exist on tests/init
 
@@ -650,7 +650,6 @@ def test_yoloe():
     model(SOURCE, conf=0.01)
 
     import numpy as np
-
     from ultralytics import YOLOE
     from ultralytics.models.yolo.yoloe import YOLOEVPSegPredictor
 

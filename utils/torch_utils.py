@@ -10,14 +10,13 @@ from contextlib import contextmanager
 from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, Union
+from typing import Any, Union
 
 import numpy as np
 import torch
 import torch.distributed as dist
 import torch.nn as nn
 import torch.nn.functional as F
-
 from ultralytics import __version__
 from ultralytics.utils import (
     DEFAULT_CFG_DICT,
@@ -705,7 +704,7 @@ class ModelEMA:
             copy_attr(self.ema, model, include, exclude)
 
 
-def strip_optimizer(f: Union[str, Path] = "best.pt", s: str = "", updates: Dict[str, Any] = None) -> Dict[str, Any]:
+def strip_optimizer(f: Union[str, Path] = "best.pt", s: str = "", updates: dict[str, Any] = None) -> dict[str, Any]:
     """
     Strip optimizer from 'f' to finalize training, optionally save as 's'.
 

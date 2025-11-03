@@ -6,20 +6,19 @@ import platform
 import zipfile
 from collections import OrderedDict, namedtuple
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 import cv2
 import numpy as np
 import torch
 import torch.nn as nn
 from PIL import Image
-
 from ultralytics.utils import ARM64, IS_JETSON, LINUX, LOGGER, PYTHON_VERSION, ROOT, YAML
 from ultralytics.utils.checks import check_requirements, check_suffix, check_version, check_yaml, is_rockchip
 from ultralytics.utils.downloads import attempt_download_asset, is_url
 
 
-def check_class_names(names: Union[List, Dict]) -> Dict[int, str]:
+def check_class_names(names: Union[list, dict]) -> dict[int, str]:
     """
     Check class names and convert to dict format if needed.
 
@@ -49,7 +48,7 @@ def check_class_names(names: Union[List, Dict]) -> Dict[int, str]:
     return names
 
 
-def default_class_names(data: Optional[Union[str, Path]] = None) -> Dict[int, str]:
+def default_class_names(data: Optional[Union[str, Path]] = None) -> dict[int, str]:
     """
     Apply default class names to an input YAML file or return numerical class names.
 
@@ -134,7 +133,7 @@ class AutoBackend(nn.Module):
     @torch.no_grad()
     def __init__(
         self,
-        weights: Union[str, List[str], torch.nn.Module] = "yolo11n.pt",
+        weights: Union[str, list[str], torch.nn.Module] = "yolo11n.pt",
         device: torch.device = torch.device("cpu"),
         dnn: bool = False,
         data: Optional[Union[str, Path]] = None,
@@ -425,7 +424,6 @@ class AutoBackend(nn.Module):
         elif pb:  # https://www.tensorflow.org/guide/migrate#a_graphpb_or_graphpbtxt
             LOGGER.info(f"Loading {w} for TensorFlow GraphDef inference...")
             import tensorflow as tf
-
             from ultralytics.engine.exporter import gd_outputs
 
             def wrap_frozen_graph(gd, inputs, outputs):
@@ -619,9 +617,9 @@ class AutoBackend(nn.Module):
         im: torch.Tensor,
         augment: bool = False,
         visualize: bool = False,
-        embed: Optional[List] = None,
+        embed: Optional[list] = None,
         **kwargs: Any,
-    ) -> Union[torch.Tensor, List[torch.Tensor]]:
+    ) -> Union[torch.Tensor, list[torch.Tensor]]:
         """
         Run inference on an AutoBackend model.
 
@@ -846,7 +844,7 @@ class AutoBackend(nn.Module):
         """
         return torch.tensor(x).to(self.device) if isinstance(x, np.ndarray) else x
 
-    def warmup(self, imgsz: Tuple[int, int, int, int] = (1, 3, 640, 640)) -> None:
+    def warmup(self, imgsz: tuple[int, int, int, int] = (1, 3, 640, 640)) -> None:
         """
         Warm up the model by running one forward pass with a dummy input.
 
@@ -862,7 +860,7 @@ class AutoBackend(nn.Module):
                 self.forward(im)  # warmup
 
     @staticmethod
-    def _model_type(p: str = "path/to/model.pt") -> List[bool]:
+    def _model_type(p: str = "path/to/model.pt") -> list[bool]:
         """
         Take a path to a model file and return the model type.
 

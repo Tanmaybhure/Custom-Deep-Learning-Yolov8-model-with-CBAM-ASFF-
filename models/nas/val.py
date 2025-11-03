@@ -1,7 +1,6 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
 import torch
-
 from ultralytics.models.yolo.detect import DetectionValidator
 from ultralytics.utils import ops
 

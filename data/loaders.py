@@ -8,13 +8,12 @@ import urllib
 from dataclasses import dataclass
 from pathlib import Path
 from threading import Thread
-from typing import Any, List, Optional, Tuple, Union
+from typing import Any, Optional, Union
 
 import cv2
 import numpy as np
 import torch
 from PIL import Image
-
 from ultralytics.data.utils import FORMATS_HELP_MSG, IMG_FORMATS, VID_FORMATS
 from ultralytics.utils import IS_COLAB, IS_KAGGLE, LOGGER, ops
 from ultralytics.utils.checks import check_requirements
@@ -192,7 +191,7 @@ class LoadStreams:
         self.count = -1
         return self
 
-    def __next__(self) -> Tuple[List[str], List[np.ndarray], List[str]]:
+    def __next__(self) -> tuple[list[str], list[np.ndarray], list[str]]:
         """Return the next batch of frames from multiple video streams for processing."""
         self.count += 1
 
@@ -294,7 +293,7 @@ class LoadScreenshots:
         """Yield the next screenshot image from the specified screen or region for processing."""
         return self
 
-    def __next__(self) -> Tuple[List[str], List[np.ndarray], List[str]]:
+    def __next__(self) -> tuple[list[str], list[np.ndarray], list[str]]:
         """Capture and return the next screenshot as a numpy array using the mss library."""
         im0 = np.asarray(self.sct.grab(self.monitor))[:, :, :3]  # BGRA to BGR
         im0 = cv2.cvtColor(im0, cv2.COLOR_BGR2GRAY)[..., None] if self.cv2_flag == cv2.IMREAD_GRAYSCALE else im0
@@ -344,7 +343,7 @@ class LoadImagesAndVideos:
         - Can read from a text file containing paths to images and videos.
     """
 
-    def __init__(self, path: Union[str, Path, List], batch: int = 1, vid_stride: int = 1, channels: int = 3):
+    def __init__(self, path: Union[str, Path, list], batch: int = 1, vid_stride: int = 1, channels: int = 3):
         """
         Initialize dataloader for images and videos, supporting various input formats.
 
@@ -402,7 +401,7 @@ class LoadImagesAndVideos:
         self.count = 0
         return self
 
-    def __next__(self) -> Tuple[List[str], List[np.ndarray], List[str]]:
+    def __next__(self) -> tuple[list[str], list[np.ndarray], list[str]]:
         """Return the next batch of images or video frames with their paths and metadata."""
         paths, imgs, info = [], [], []
         while len(imgs) < self.bs:
@@ -513,7 +512,7 @@ class LoadPilAndNumpy:
         Loaded 2 images
     """
 
-    def __init__(self, im0: Union[Image.Image, np.ndarray, List], channels: int = 3):
+    def __init__(self, im0: Union[Image.Image, np.ndarray, list], channels: int = 3):
         """
         Initialize a loader for PIL and Numpy images, converting inputs to a standardized format.
 
@@ -547,7 +546,7 @@ class LoadPilAndNumpy:
         """Return the length of the 'im0' attribute, representing the number of loaded images."""
         return len(self.im0)
 
-    def __next__(self) -> Tuple[List[str], List[np.ndarray], List[str]]:
+    def __next__(self) -> tuple[list[str], list[np.ndarray], list[str]]:
         """Return the next batch of images, paths, and metadata for processing."""
         if self.count == 1:  # loop only once as it's batch inference
             raise StopIteration
@@ -623,7 +622,7 @@ class LoadTensor:
         self.count = 0
         return self
 
-    def __next__(self) -> Tuple[List[str], torch.Tensor, List[str]]:
+    def __next__(self) -> tuple[list[str], torch.Tensor, list[str]]:
         """Yield the next batch of tensor images and metadata for processing."""
         if self.count == 1:
             raise StopIteration
@@ -635,7 +634,7 @@ class LoadTensor:
         return self.bs
 
 
-def autocast_list(source: List[Any]) -> List[Union[Image.Image, np.ndarray]]:
+def autocast_list(source: list[Any]) -> list[Union[Image.Image, np.ndarray]]:
     """Merge a list of sources into a list of numpy arrays or PIL images for Ultralytics prediction."""
     files = []
     for im in source:

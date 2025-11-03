@@ -1,10 +1,9 @@
 # Ultralytics 🚀 AGPL-3.0 License - https://ultralytics.com/license
 
-from typing import Any, List
+from typing import Any
 
 import cv2
 import numpy as np
-
 from ultralytics.solutions.object_counter import ObjectCounter
 from ultralytics.solutions.solutions import SolutionAnnotator, SolutionResults
 
@@ -50,7 +49,7 @@ class Heatmap(ObjectCounter):
         self.colormap = self.CFG["colormap"]
         self.heatmap = None
 
-    def heatmap_effect(self, box: List[float]) -> None:
+    def heatmap_effect(self, box: list[float]) -> None:
         """
         Efficiently calculate heatmap area and effect location for applying colormap.
 

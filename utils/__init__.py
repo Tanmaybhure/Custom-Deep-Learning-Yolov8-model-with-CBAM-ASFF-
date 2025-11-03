@@ -23,7 +23,6 @@ import cv2
 import numpy as np
 import torch
 import tqdm
-
 from ultralytics import __version__
 from ultralytics.utils.patches import imread, imshow, imwrite, torch_save  # for patches
 

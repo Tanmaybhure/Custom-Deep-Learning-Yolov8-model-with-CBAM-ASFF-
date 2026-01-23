@@ -8,7 +8,6 @@ from pathlib import Path
 from typing import Any, Optional
 
 import requests
-
 from ultralytics import __version__
 from ultralytics.utils import (
     ARGV,

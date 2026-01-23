@@ -34,11 +34,10 @@ import re
 import shutil
 import time
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Union
 
 import numpy as np
 import torch.cuda
-
 from ultralytics import YOLO, YOLOWorld
 from ultralytics.cfg import TASK2DATA, TASK2METRIC
 from ultralytics.engine.exporter import export_formats
@@ -393,7 +392,7 @@ class ProfileModels:
 
     def __init__(
         self,
-        paths: List[str],
+        paths: list[str],
         num_timed_runs: int = 100,
         num_warmup_runs: int = 10,
         min_time: float = 60,
@@ -643,9 +642,9 @@ class ProfileModels:
     def generate_table_row(
         self,
         model_name: str,
-        t_onnx: Tuple[float, float],
-        t_engine: Tuple[float, float],
-        model_info: Tuple[float, float, float, float],
+        t_onnx: tuple[float, float],
+        t_engine: tuple[float, float],
+        model_info: tuple[float, float, float, float],
     ):
         """
         Generate a table row string with model performance metrics.
@@ -668,9 +667,9 @@ class ProfileModels:
     @staticmethod
     def generate_results_dict(
         model_name: str,
-        t_onnx: Tuple[float, float],
-        t_engine: Tuple[float, float],
-        model_info: Tuple[float, float, float, float],
+        t_onnx: tuple[float, float],
+        t_engine: tuple[float, float],
+        model_info: tuple[float, float, float, float],
     ):
         """
         Generate a dictionary of profiling results.
@@ -694,7 +693,7 @@ class ProfileModels:
         }
 
     @staticmethod
-    def print_table(table_rows: List[str]):
+    def print_table(table_rows: list[str]):
         """
         Print a formatted table of model profiling results.
 
